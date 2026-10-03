@@ -1,5 +1,19 @@
 # Agência Bancária em Quarkus — gabarito incremental do Dia 1
 
+## Ambiente JDK 25.0.2 e JVM
+
+Use Temurin JDK 25.0.2 para compilar, testar e executar este projeto. O `pom.xml` define `maven.compiler.release=25`: o bytecode gerado exige Java 25. No macOS, selecione o JDK antes do Maven:
+
+```sh
+export JAVA_HOME=$(/usr/libexec/java_home -v 25.0.2)
+export PATH="$JAVA_HOME/bin:$PATH"
+java -version
+javac -version
+mvn -version
+```
+
+Para desenvolver, use `mvn quarkus:dev`. Para criar e executar o pacote JVM, use `mvn test package` e `java -jar target/quarkus-app/quarkus-run.jar` com a pasta `target/quarkus-app` inteira. O curso não usa Docker nem compilação nativa.
+
 Reconstrução do cadastro de Pessoa do projeto Spring `projeto-agencia-bancaria-gabarito`.
 Este primeiro estágio usa memória para isolar REST, JSON, validação, CDI e camadas.
 Os dados se perdem ao reiniciar. PostgreSQL entra no Dia 2, em instância didática
@@ -7,7 +21,7 @@ isolada; JPA, BCrypt e JWT entram depois.
 
 ## Stack validada
 
-- Quarkus 3.40.1, Maven 3.9.9 e Temurin JDK 17.0.18.
+- Quarkus 3.40.1, Maven 3.9.9 e Temurin JDK 25.0.2.
 - `quarkus-rest-jackson`, `quarkus-hibernate-validator`, `quarkus-arc`.
 - Testes: `quarkus-junit` e RestAssured.
 - Sem datasource, Dev Services, containers ou build nativo.

@@ -1,14 +1,3 @@
-# Validação do gabarito Dia 1
+# Validação de dia-01 — 3 de outubro de 2026
 
-Executado em 2 de outubro de 2026 no Mac da tarefa, com JDK Temurin 17.0.18,
-Maven 3.9.9 e Quarkus 3.40.1.
-
-Comando: `mvn -o -B -q -Dmaven.repo.local=<cache-isolado-da-tarefa> test package`.
-
-Resultado: build concluído e quatro testes HTTP passaram, sem falhas nem erros:
-201 com `Location`, 400 para e-mail inválido, 400 para corpo JSON nulo e 409
-para CPF repetido. O teste `@QuarkusTest` iniciou HTTP local temporariamente;
-nenhum banco, Docker ou container foi iniciado. O pacote JVM foi criado em
-`target/quarkus-app`, que não acompanha este ZIP de código-fonte.
-
-Não foram executados testes do projeto Spring original nem testes com PostgreSQL.
+Quarkus 3.40.1, Temurin JDK 25.0.2, Maven 3.9.9 e `maven.compiler.release=25` (bytecode Java 25). Comando executado: `mvn -o test package` com cache Maven local da tarefa. Passaram 4 testes HTTP de cadastro de Pessoa. Resultado: 4 testes, 0 falhas, 0 erros, 0 ignorados. O pacote JVM `target/quarkus-app/quarkus-run.jar` foi criado. Nenhum Docker, build nativo ou banco foi iniciado. A integração real com PostgreSQL ainda depende de validação em banco didático isolado.
