@@ -1,7 +1,10 @@
 package br.edu.fiap.banco.exception;
 
-public class CpfJaCadastradoException extends RuntimeException {
+import jakarta.ws.rs.core.Response;
+
+/** CPF repetido no cadastro. O tratamento global responde HTTP 409. */
+public class CpfJaCadastradoException extends ErroNegocioException {
     public CpfJaCadastradoException() {
-        super("CPF já cadastrado.");
+        super(Response.Status.CONFLICT, "CPF já cadastrado.");
     }
 }

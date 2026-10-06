@@ -6,6 +6,7 @@ import jakarta.inject.Inject;
 
 import javax.sql.DataSource;
 import java.sql.*;
+import java.util.Optional;
 
 @ApplicationScoped
 public class PessoaRepositoryImpl implements PessoaRepository{
@@ -48,6 +49,35 @@ public class PessoaRepositoryImpl implements PessoaRepository{
             }
         }catch(SQLException err){
             throw new IllegalStateException("Falha ao persistir pessoa.", err);
+        }
+
+
+    }
+
+    //        getPessoaById
+
+    @Override
+    public Optional<Pessoa> getPessoaById(Long id){
+        String sql = "SELECT * FROM pessoas WHERE id = ?";
+
+        try (
+                Connection connection = dataSource.getConnection();
+             PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setLong(1, id);
+
+            try (ResultSet resultado = statement.executeQuery()) {
+                if (!resultado.next()) {
+                    return Optional.empty();
+                }
+                return Optional.of(new Pessoa(
+                        resultado.getLong("id"),
+                        resultado.getString("nome"),
+                        resultado.getString("cpf"),
+                        resultado.getString("email")));
+            }
+        }catch(SQLException err){
+            throw new IllegalStateException("Falha ao consultar pessoaa.", err);
         }
     }
 }

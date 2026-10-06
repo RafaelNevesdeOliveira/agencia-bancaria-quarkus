@@ -6,10 +6,7 @@ import br.edu.fiap.banco.service.PessoaService;
 import jakarta.inject.Inject;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
-import jakarta.ws.rs.Consumes;
-import jakarta.ws.rs.POST;
-import jakarta.ws.rs.Path;
-import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.*;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.net.URI;
@@ -47,5 +44,11 @@ public class PessoaResource {
         return Response.created(URI.create("/api/pessoas/" + pessoa.id()))
                 .entity(pessoa)
                 .build();
+    }
+
+    @GET
+    @Path("/{id}")
+    public PessoaResponse getPessoaById(@PathParam("id") Long id) {
+        return service.getPessoaById(id);
     }
 }
