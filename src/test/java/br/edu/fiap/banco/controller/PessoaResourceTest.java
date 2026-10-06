@@ -5,6 +5,7 @@ import io.restassured.http.ContentType;
 import org.junit.jupiter.api.Test;
 
 import static io.restassured.RestAssured.given;
+import static org.hamcrest.Matchers.containsString;
 import static org.hamcrest.Matchers.equalTo;
 import static org.hamcrest.Matchers.matchesPattern;
 
@@ -12,6 +13,17 @@ import static org.hamcrest.Matchers.matchesPattern;
 // @SpringBootTest com RestAssured/WebTestClient cumpre papel semelhante.
 @QuarkusTest
 class PessoaResourceTest {
+    @Test
+    void publicaContratoOpenApi() {
+        given().when().get("/openapi")
+                .then().statusCode(200)
+                .body(containsString("API Agência Bancária"))
+                .body(containsString("/api/pessoas"))
+                .body(containsString("Mariana Costa"))
+                .body(containsString("52998224725"))
+                .body(containsString("mariana.costa@example.test"));
+    }
+
     @Test
     void cadastraPessoaComMesmoContratoDoSpring() {
         given().contentType(ContentType.JSON)

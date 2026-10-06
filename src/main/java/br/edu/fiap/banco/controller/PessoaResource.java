@@ -13,6 +13,11 @@ import jakarta.ws.rs.Produces;
 import jakarta.ws.rs.core.MediaType;
 import jakarta.ws.rs.core.Response;
 import java.net.URI;
+import org.eclipse.microprofile.openapi.annotations.Operation;
+import org.eclipse.microprofile.openapi.annotations.media.Content;
+import org.eclipse.microprofile.openapi.annotations.media.ExampleObject;
+import org.eclipse.microprofile.openapi.annotations.parameters.RequestBody;
+import org.eclipse.microprofile.openapi.annotations.tags.Tag;
 
 /**
  * Camada HTTP equivalente ao PessoaController no Spring.
@@ -22,6 +27,7 @@ import java.net.URI;
 @Path("/api/pessoas")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
+@Tag(name = "Pessoas")
 public class PessoaResource {
     private final PessoaService service;
 
@@ -35,6 +41,7 @@ public class PessoaResource {
     // @POST equivale a @PostMapping no Spring. @NotNull recusa corpo nulo e
     // @Valid aplica as restrições do DTO, como em @Valid @RequestBody.
     @POST
+    @Operation(summary = "Cadastra um titular")
     public Response cadastrar(@NotNull @Valid PessoaRequest request) {
         PessoaResponse pessoa = service.cadastrar(request);
         return Response.created(URI.create("/api/pessoas/" + pessoa.id()))

@@ -113,6 +113,25 @@ Docker nem compilação nativa.
 Consulte o [guia oficial de início do Quarkus](https://quarkus.io/guides/getting-started/)
 para os comandos de desenvolvimento e empacotamento JVM.
 
+### Iniciar o servidor com H2
+
+O perfil padrão aponta para o PostgreSQL local. Para praticar sem instalar ou
+iniciar o PostgreSQL, pare o Quarkus que já estiver na porta 8081 e suba com o
+perfil `h2`:
+
+```sh
+mvn quarkus:dev -Dquarkus.profile=h2
+```
+
+O log deve mostrar `Profile h2 activated` e a aplicação em
+`http://localhost:8081`. O Swagger fica em `http://localhost:8081/swagger-ui`.
+
+No IntelliJ, acrescente `-Dquarkus.profile=h2` nos argumentos da execução do
+`quarkus:dev`.
+
+O usuário do H2 é `sa` e a senha fica vazia. O banco é em memória e some quando
+a aplicação para.
+
 Reconstrução do cadastro de Pessoa do projeto Spring `projeto-agencia-bancaria-gabarito`.
 Este primeiro estágio usa memória para isolar REST, JSON, validação, CDI e camadas.
 Os dados se perdem ao reiniciar. PostgreSQL entra no Dia 2, em instância didática
