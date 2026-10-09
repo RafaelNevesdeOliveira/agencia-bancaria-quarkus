@@ -38,4 +38,33 @@ public class PessoaService {
                 .map(PessoaResponse::de)
                 .orElseThrow(PessoaNaoEncontradaException::new);
     }
+
+//    Substituir nome, cpf, email do titular
+//    cpf soh é recusado quando ja pertence a outra pessoa
+
+    public PessoaResponse atualizar(Long id, PessoaRequest request){
+        Pessoa pessoaAtual = repository.getPessoaById(id).orElseThrow(PessoaNaoEncontradaException::new);
+
+        if(pessoaAtual.cpfAlterado(request.cpf()) && repository.existePorCpf(request.cpf())){
+            throw new CpfJaCadastradoException();
+        }
+
+        Pessoa pessoa = pessoaAtual.atualizar(request.nome(), request.cpf(), request.email());
+
+//        /api/pessoa/{3} --> ParamRequest
+//        BodyRequest
+//        {
+//            "nome": "Raquel"
+//            "cpf" "12312312312"
+//            "email" "raquelmtorica@email.com"
+//        }
+        return  PessoaResponse.de(repository.atualizar(pessoa));
+    }
+
+    public void excluir(Long id){
+        if(!repository.excluir(id)){
+            throw new PessoaNaoEncontradaException();
+        }
+        repository.excluir(id);
+    }
 }

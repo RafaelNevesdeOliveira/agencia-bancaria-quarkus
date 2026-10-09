@@ -10,4 +10,8 @@ public interface PessoaRepository {
     Pessoa salvar(Pessoa pessoa);
 
     Optional<Pessoa> getPessoaById(Long id);
+
+    Pessoa atualizar(Pessoa pessoa);
+
+    boolean excluir(Long id);
 }

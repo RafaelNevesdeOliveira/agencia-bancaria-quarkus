@@ -51,4 +51,17 @@ public class PessoaResource {
     public PessoaResponse getPessoaById(@PathParam("id") Long id) {
         return service.getPessoaById(id);
     }
+
+    @PUT
+    @Path("/{id}")
+    public PessoaResponse atualizar(@PathParam("id") Long id, @NotNull @Valid PessoaRequest request) {
+        return service.atualizar(id, request);
+    }
+
+    @DELETE
+    @Path("/{id}")
+    public Response excluir(@PathParam("id") Long id) {
+        service.excluir(id);
+        return Response.noContent().build();
+    }
 }

@@ -1,6 +1,8 @@
 package br.edu.fiap.banco.repository;
 
 import br.edu.fiap.banco.entity.Pessoa;
+import br.edu.fiap.banco.exception.PessoaNaoEncontradaException;
+import br.edu.fiap.banco.exception.PessoaPossuiContaException;
 import jakarta.enterprise.context.ApplicationScoped;
 import jakarta.inject.Inject;
 
@@ -54,8 +56,6 @@ public class PessoaRepositoryImpl implements PessoaRepository{
 
     }
 
-    //        getPessoaById
-
     @Override
     public Optional<Pessoa> getPessoaById(Long id){
         String sql = "SELECT * FROM pessoas WHERE id = ?";
@@ -80,4 +80,60 @@ public class PessoaRepositoryImpl implements PessoaRepository{
             throw new IllegalStateException("Falha ao consultar pessoaa.", err);
         }
     }
+
+    @Override
+    public Pessoa atualizar(Pessoa pessoa){
+        String sql = "UPDATE pessoas SET nome = ?, cpf = ?, email = ? WHERE id = ?";
+
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setString(1, pessoa.nome());
+            statement.setString(2, pessoa.cpf());
+            statement.setString(1, pessoa.email());
+
+            //O id ele vai no WHERE, não entra na lista de colunas alteradas.
+            statement.setLong(4, pessoa.id());
+
+            //Zero linhas ; o id sumiu entre a consulta e o update
+            if( statement.executeUpdate() == 0){
+                throw new PessoaNaoEncontradaException();
+            }
+
+            return pessoa;
+        }catch(SQLException err){
+            throw new IllegalStateException("Falha ao atualizar pessoaa.", err);
+        }
+    }
+
+    @Override
+    public boolean excluir(Long id){
+        String sql = "DELETE FROM pessoas Where id = ?";
+        try (
+                Connection connection = dataSource.getConnection();
+                PreparedStatement statement = connection.prepareStatement(sql))
+        {
+            statement.setLong(1, id);
+
+            // executeUpdate devolve quantas linhas sairam. Zero significa id ausente
+            return statement.executeUpdate() > 0;
+        }catch(SQLException err){
+            // 23503 é violação de chave extrangeira, a pessoa ainda é titular de conta que esta ativa
+            if("23503".equals(err.getSQLState())){
+                throw new PessoaPossuiContaException();
+            }
+
+            throw new IllegalStateException("Falha ao excluir pessoaa.", err);
+        }
+    }
+
+
+
+
+
+
+
+
+
 }
