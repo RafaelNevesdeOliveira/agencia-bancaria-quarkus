@@ -1,5 +1,6 @@
 package br.edu.fiap.banco.config;
 
+import br.edu.fiap.banco.infrastructure.config.H2DatabaseConfig;
 import io.quarkus.test.junit.QuarkusTest;
 import jakarta.inject.Inject;
 import org.junit.jupiter.api.Test;
